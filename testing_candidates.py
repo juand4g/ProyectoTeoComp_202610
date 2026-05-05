@@ -62,3 +62,20 @@ def which_multiple(p_found, p_true, multiples=[1/2, 1, 2, 3, 4, 5, 6, 7]):
             best_multiple = m_best
 
     return best_multiple if best_error < 0.05 else None
+
+
+# ── NUEVO ─────────────────────────────────────────────────────────────────────
+def which_candidate(p_found, p_true, multiples=[1/2, 1, 2, 3, 4, 5, 6, 7], threshold=0.05):
+    """
+    Retorna el índice 1-based del primer candidato (menor número) que pasa el
+    test de período. Si ninguno lo pasa, retorna None.
+    """
+    p_found = np.atleast_1d(p_found)
+
+    for i, p in enumerate(p_found):
+        errors = [abs(p - m * p_true) / (m * p_true) for m in multiples]
+        if min(errors) < threshold:
+            return i + 1  # 1-based
+
+    return None
+# ── FIN NUEVO ─────────────────────────────────────────────────────────────────

@@ -1,6 +1,5 @@
 import numpy as np
-from tqdm import tqdm
-import matplotlib.pyplot as plt
+from scipy.signal import find_peaks
 
 def get_test_periods(period_i, period_f, n):
     """
@@ -82,23 +81,11 @@ def get_entropy(Mu):
     return (-Mu_nz * np.log(Mu_nz)).sum()
 
 
-def entropy_thresholds(L, K):
-    """
-    Umbrales teóricos de Cincotta para entropía normalizada S/ln(LK):
-
-      S_alias ≈ ln(2K) / ln(L*K)   → alias de muestreo (1 día y múltiplos)
-      S_real  ≈ ln(L)   / ln(L*K)   → período real (curva suave)
-
-    Devuelve entropías normalizadas.
-    """
-    ln_LK   = np.log(L * K)
-    S_alias = np.log(2 * K)/ln_LK          # ≈ ln(2K)
-    S_real  = np.log(L)/ln_LK              # ≈ ln(L)
-    return S_real, S_alias
-
-def find_best_period(data, p0, p1, p_num, L=12, K=7,
-                     eps=0.01, plot_entropies=False, plot_periods=False,
-                     name=None):
+def find_best_period(data, p0, p1, p_num, L=7, K=7,
+                     alias_eps=0.01,
+                     n_candidates=1,
+                    peak_prominence=0.03,
+                    peak_distance=30):
     """
     Encuentra el mejor período usando mínima entropía en el cuadrado unitario.
 
@@ -110,13 +97,8 @@ def find_best_period(data, p0, p1, p_num, L=12, K=7,
     """
     testing_periods = get_test_periods(p0, p1, p_num)
 
-    if plot_periods:
-        plt.hist(testing_periods, bins=50)
-        plt.xlabel("Período (días)")
-        plt.title("Distribución de períodos de prueba")
-        plt.show()
-
     # ── Antialiasing ──────────────────────────────────────────────────────────
+    # ── Por defecto toma múltiplos de medio día y 1/3 de día
     alias_centers = (
         [n * 0.5 for n in range(1, int(p1 / 0.5) + 2)] +
         [n / 3   for n in range(1, int(p1 * 3)  + 2)]
@@ -125,13 +107,13 @@ def find_best_period(data, p0, p1, p_num, L=12, K=7,
 
     aliasing_mask = np.zeros(len(testing_periods), dtype=bool)
     for ac in alias_centers:
-        aliasing_mask |= np.abs(testing_periods - ac) < eps
+        aliasing_mask |= np.abs(testing_periods - ac) < alias_eps
 
     testing_periods = testing_periods[~aliasing_mask]
 
     # ── Calcular entropías ────────────────────────────────────────────────────
     entropies = np.zeros(len(testing_periods))
-    for i, p in tqdm(enumerate(testing_periods), total=len(testing_periods)):
+    for i, p in enumerate(testing_periods):
         phases        = get_phases(data["t"], data["u"], p)
         Mu            = get_probabilities_unitcube(phases, data["u"], L, K)
         entropies[i]  = get_entropy(Mu)
@@ -139,41 +121,22 @@ def find_best_period(data, p0, p1, p_num, L=12, K=7,
     # Normalizar entropias
     entropies = entropies / np.log(L * K)
 
-    # Umbrales teóricos normalizados
-    S_real, S_alias= entropy_thresholds(L, K)
+    # ── Buscar mínimos locales ───────────────────────────────
+    peaks, properties = find_peaks(
+        -entropies,
+        prominence=peak_prominence,
+        distance=peak_distance
+    )
 
-    # ── Mejor período ─────────────────────────────────────────────────────────
-    min_idx     = np.argmin(entropies)
-    best_period = testing_periods[min_idx]
-    min_entropy = entropies[min_idx]
+    if len(peaks) == 0:
+        peaks = [np.argmin(entropies)]
 
-    final_phases = get_phases(data["t"], data["u"], best_period)
-    phases2      = final_phases + 1
+    candidate_periods = testing_periods[peaks]
+    candidate_entropies = entropies[peaks]
 
-    # ── Gráficas ──────────────────────────────────────────────────────────────
-    if plot_entropies:
-        fig, (ax1, ax2) = plt.subplots(1, 2, figsize=(14, 4))
-        title_base = f"{name} — P = {best_period:.5f} d" if name else f"P = {best_period:.5f} d"
+    order = np.argsort(candidate_entropies)
 
-        for ax, x, xlabel in [
-            (ax1, testing_periods,       "Período de prueba (días)"),
-            (ax2, 1 / testing_periods,   "Frecuencia (días⁻¹)"),
-        ]:
-            ax.plot(x, entropies, lw=0.8, color="steelblue")
-            ax.axhline(S_real,  color="green",  linestyle="--", lw=1.2,
-                       label=f"S_real ≈ ln(L) = {S_real:.3f}")
-            ax.axhline(S_alias, color="red",    linestyle="--", lw=1.2,
-                       label=f"S_alias ≈ ln(2K) = {S_alias:.3f}")
-            ax.axvline(x[min_idx] if ax is ax1 else 1 / best_period,
-                       color="orange", linestyle=":", lw=1.5,
-                       label=f"Mejor período")
-            ax.set_xlabel(xlabel)
-            ax.set_ylabel("Entropía (nats)")
-            ax.legend(fontsize=8)
+    candidate_periods = candidate_periods[order][:n_candidates]
+    candidate_entropies = candidate_entropies[order][:n_candidates]
 
-        ax1.set_title(f"Periodograma — {title_base}")
-        ax2.set_title("Periodograma en frecuencia")
-        plt.tight_layout()
-        plt.show()
-
-    return best_period, min_entropy, final_phases, phases2, testing_periods, entropies
+    return candidate_periods, candidate_entropies
