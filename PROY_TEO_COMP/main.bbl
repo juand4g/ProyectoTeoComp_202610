@@ -1,0 +1,51 @@
+\begin{thebibliography}{11}
+\expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
+
+\bibitem[{Aligica(2009)}]{aligica}
+Aligica, P.~D. 2009, The Electronic Journal of Sustainable Development, 1, 73
+
+\bibitem[{Baca{\"e}r(2011)}]{bacaer}
+Baca{\"e}r, N. 2011, A short history of mathematical population dynamics, Vol.
+  618 (Springer)
+
+\bibitem[{Banks(1993)}]{banks}
+Banks, R.~B. 1993, Growth and diffusion phenomena: {M}athematical frameworks
+  and applications, Vol.~14 (Springer Science \& Business Media)
+
+\bibitem[{Cincotta {et~al.}(1995)Cincotta, M{\'e}ndez, \&
+  N{\'u}{\~n}ez}]{cincotta1995astronomical}
+Cincotta, P.~M., M{\'e}ndez, M., \& N{\'u}{\~n}ez, J.~A. 1995,
+  \href{http://dx.doi.org/10.1086/176050}{\color{magenta}The Astrophysical
+  Journal}, 449, 231
+
+\bibitem[{Cubillos(2021)}]{cubillos2021}
+Cubillos, A. y~García, A. 2021, Departamento de Física de la Universidad de
+  los Andes
+
+\bibitem[{Karttunen {et~al.}(2016)Karttunen, Kröger, Oja, Poutanen, Donner,
+  Karttunen, Oja, Kröger, \& Poutanen}]{Karttunen2016}
+Karttunen, H., Kröger, P., Oja, H., {et~al.} 2016, Fundamental Astronomy,
+  sixth edition. edn. (Springer Nature)
+
+\bibitem[{Meyer \& Ausubel(1999)}]{ausubel}
+Meyer, P.~S. \& Ausubel, J.~H. 1999, Technological forecasting and social
+  change, 61, 209
+
+\bibitem[{Rodr{\'i}guez~del R{\'i}o \& Zuazua(2003{\natexlab{a}})}]{rrr1}
+Rodr{\'i}guez~del R{\'i}o, R. \& Zuazua, E. 2003{\natexlab{a}}, Series de
+  Fourier y fen\'omeno de Gibbs, Vol.~5 (ABCD), 185--224
+
+\bibitem[{Rodr{\'i}guez~del R{\'i}o \& Zuazua(2003{\natexlab{b}})}]{RoZu03}
+Rodr{\'i}guez~del R{\'i}o, R. \& Zuazua, E. 2003{\natexlab{b}}, Cubo Mat. Educ,
+  5, 185
+
+\bibitem[{Udalski {et~al.}(2002)Udalski, Szymański, Kubiak, Pietrzynski,
+  Soszyński, Woźniak, Żebruń, Szewczyk, \& Wyrzykowski}]{udalski2002bvi}
+Udalski, A., Szymański, M., Kubiak, M., {et~al.} 2002, Acta Astronomica,
+  \href{https://ui.adsabs.harvard.edu/abs/2002AcA....52..217U}{52, 217},
+  received September 17, 2002
+
+\bibitem[{Urquhart(2016)}]{Ur16}
+Urquhart, A. 2016, Economics Letters, 148, 80
+
+\end{thebibliography}

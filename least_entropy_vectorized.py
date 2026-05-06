@@ -169,6 +169,84 @@ def get_entropy(Mu):
     return (-Mu_nz * np.log(Mu_nz)).sum()
 
 
+def get_entropies(t, u, p, L=7, K=7):
+    """
+    Compute the normalized Shannon entropy of the phase-magnitude diagram
+    for an array of trial periods.
+
+    This is the bare entropy periodogram: no period grid is built internally,
+    no aliases are removed, and no peaks are selected. It is useful when you
+    want to supply your own period array, inspect the full entropy curve, or
+    locate minima with your own criteria.
+
+    Parameters
+    ----------
+    t : array-like of shape (N,)
+        Observation times (days).
+    u : array-like of shape (N,)
+        Observed magnitudes.
+    p : array-like of shape (P,)
+        Trial periods (days) at which to evaluate the entropy. All values
+        must be strictly positive.
+    L : int, optional
+        Number of phase bins (horizontal axis of the grid). Default is 7.
+    K : int, optional
+        Number of magnitude bins (vertical axis of the grid). Default is 7.
+
+    Returns
+    -------
+    entropies : ndarray of shape (P,)
+        Normalized Shannon entropy at each trial period, in [0, 1]. Lower
+        values indicate a more structured (better-phased) light curve. Values
+        are normalized by log(L*K) so that a perfectly uniform distribution
+        gives 1 and a single occupied cell gives 0.
+
+    Examples
+    --------
+    >>> import numpy as np
+    >>> import least_entropy_vectorized as le
+    >>> periods = np.linspace(0.5, 2.0, 5000)
+    >>> entropies = le.get_entropies(t, u, periods, L=7, K=7)
+    >>> best = periods[np.argmin(entropies)]
+    """
+    t_data  = np.asarray(t, dtype=float)
+    u_data  = np.asarray(u, dtype=float)
+    periods = np.asarray(p, dtype=float)
+    N = len(t_data)
+    P = len(periods)
+
+    # Phase reference: observation nearest to the 2nd-percentile magnitude
+    threshold = np.percentile(u_data, 2)
+    t0        = t_data[np.argmin(np.abs(u_data - threshold))]
+
+    # Min-max normalize magnitudes to [0, 1]
+    u_min, u_max = u_data.min(), u_data.max()
+    if u_max > u_min:
+        u_norm = (u_data - u_min) / (u_max - u_min)
+    else:
+        u_norm = np.zeros(N)
+
+    # Phase matrix for all trial periods simultaneously: shape (N, P)
+    all_phases = ((t_data[:, None] - t0) / periods[None, :]) % 1.0
+
+    # Integer bin indices
+    phase_bins = np.floor(all_phases * L).astype(np.int32).clip(0, L - 1)  # (N, P)
+    u_bins     = np.floor(u_norm * K).astype(np.int32).clip(0, K - 1)     # (N,)
+
+    # Flatten all 2-D histograms into a single bincount call.
+    # Each period occupies its own L*K-wide band in the flat index space.
+    combined        = phase_bins * K + u_bins[:, None]                     # (N, P)
+    offsets         = np.arange(P, dtype=np.int64) * (L * K)              # (P,)
+    combined_offset = combined.T.astype(np.int64) + offsets[:, None]      # (P, N)
+
+    counts = np.bincount(combined_offset.ravel(), minlength=P * L * K)
+    Mu_all = counts.reshape(P, L * K) / N                                  # (P, L*K)
+
+    with np.errstate(divide="ignore", invalid="ignore"):
+        log_Mu = np.where(Mu_all > 0, np.log(Mu_all), 0.0)
+    return -(Mu_all * log_Mu).sum(axis=1) / np.log(L * K)                 # (P,)
+
+
 def find_best_period(t, u, p0, p1, p_num, L=7, K=7,
                      alias_eps=0.01,
                      n_candidates=3,
@@ -260,42 +338,8 @@ def find_best_period(t, u, p0, p1, p_num, L=7, K=7,
         aliasing_mask = np.zeros(len(testing_periods), dtype=bool)
 
     testing_periods = testing_periods[~aliasing_mask]
-    P = len(testing_periods)
 
-    t_data = np.asarray(t, dtype=float)
-    u_data = np.asarray(u, dtype=float)
-    N      = len(t_data)
-
-    # Compute invariants once: phase reference epoch and normalized magnitudes
-    threshold = np.percentile(u_data, 2)
-    t0        = t_data[np.argmin(np.abs(u_data - threshold))]
-
-    u_min, u_max = u_data.min(), u_data.max()
-    if u_max > u_min:
-        u_norm = (u_data - u_min) / (u_max - u_min)
-    else:
-        u_norm = np.zeros(N)
-
-    # Phase matrix for all trial periods simultaneously: shape (N, P)
-    all_phases = ((t_data[:, None] - t0) / testing_periods[None, :]) % 1.0
-
-    # Integer bin indices
-    phase_bins = np.floor(all_phases * L).astype(np.int32).clip(0, L - 1)  # (N, P)
-    u_bins     = np.floor(u_norm * K).astype(np.int32).clip(0, K - 1)     # (N,)
-
-    # Flatten all 2-D histograms into a single bincount call.
-    # Each period p occupies its own L*K-wide band in the flat index space.
-    combined        = phase_bins * K + u_bins[:, None]                     # (N, P)
-    offsets         = np.arange(P, dtype=np.int64) * (L * K)              # (P,)
-    combined_offset = combined.T.astype(np.int64) + offsets[:, None]      # (P, N)
-
-    counts = np.bincount(combined_offset.ravel(), minlength=P * L * K)
-    Mu_all = counts.reshape(P, L * K) / N                                  # (P, L*K)
-
-    # Vectorized Shannon entropy, normalized to [0, 1] by log(L*K)
-    with np.errstate(divide="ignore", invalid="ignore"):
-        log_Mu = np.where(Mu_all > 0, np.log(Mu_all), 0.0)
-    entropies = -(Mu_all * log_Mu).sum(axis=1) / np.log(L * K)            # (P,)
+    entropies = get_entropies(t, u, testing_periods, L, K)
 
     # Locate local minima by finding peaks in the negated entropy curve
     peaks, _ = find_peaks(
