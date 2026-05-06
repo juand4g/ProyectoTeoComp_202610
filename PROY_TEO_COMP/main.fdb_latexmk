@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex main"] 1778011142.1266 "main.aux" "main.bbl" "main" 1778011149.1338 0
+["bibtex main"] 1778036939.73599 "main.aux" "main.bbl" "main" 1778036947.76486 0
   "./aa_url.bst" 1778027288 32289 3724ed287755feb5467871a2960b1f7b ""
-  "./global.bib" 1778027288 3520 fef8990809525b3719b79b716b482071 ""
-  "main.aux" 1778011147 6303 f84596ee7e9197b9299325ff140a4b9e "pdflatex"
+  "./global.bib" 1778036579 4148 099ff588adf12a8be5e12702c09126e8 ""
+  "main.aux" 1778036945 6409 39a2d84c199ad35d18afd26d9dad9ce4 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1778011142.67724 "c:/Users/japar/OneDrive/Documentos/Proyecto Teorico Computacional/PROY_TEO_COMP/main.tex" "main.pdf" "main" 1778011149.13531 0
+["pdflatex"] 1778036940.295 "c:/Users/japar/OneDrive/Documentos/Proyecto Teorico Computacional/PROY_TEO_COMP/main.tex" "main.pdf" "main" 1778036947.76689 0
   "C:/Program Files/MiKTeX/fonts/enc/dvips/newpx/px-lms.enc" 1762693727 3877 2ca811886181a05a861d20a35de75e06 ""
   "C:/Program Files/MiKTeX/fonts/enc/dvips/newtx/ntx-ec-tlf-pc.enc" 1736607166 3136 bbe665bd0bb471a2da1e8fd326cff9fa ""
   "C:/Program Files/MiKTeX/fonts/enc/dvips/newtx/ntx-ec-tlf.enc" 1736607166 2914 fdbc4a54b9bc76f4551b5303f2737d33 ""
@@ -189,16 +189,16 @@
   "C:/Users/japar/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1778010108 159074 b94b108eb503b8034cde2e94f6b2b8ea ""
   "C:/Users/japar/AppData/Local/MiKTeX/miktex/data/le/pdftex/pdflatex.fmt" 1777604225 13340205 f3625b003226aac9483f74a0954d7217 ""
   "astro-thesis.sty" 1778009732 5918 7288bead25f5b7713043221c3ba08c3a ""
-  "c:/Users/japar/OneDrive/Documentos/Proyecto Teorico Computacional/PROY_TEO_COMP/main.tex" 1778011134 20706 1722435c9aaf22a2b3584f3cc9eddb94 ""
+  "c:/Users/japar/OneDrive/Documentos/Proyecto Teorico Computacional/PROY_TEO_COMP/main.tex" 1778036725 20159 270fc5599207ef8d48175b9748059996 ""
   "img/Fig 10.3 - Karttunen 2016.png" 1778027288 39745 07a0005acaf2b167d583f2acbbbaef10 ""
   "img/logofisi.png" 1778027288 23788 d575f400c28688442f41865babb949d1 ""
-  "main.aux" 1778011147 6303 f84596ee7e9197b9299325ff140a4b9e "pdflatex"
-  "main.bbl" 1778011142 2156 9eec9632dca722f756d59125ece607b9 "bibtex main"
-  "main.lof" 1778011147 371 e964966d5c89939ed7849a701cf24a66 "pdflatex"
-  "main.lot" 1778011147 170 ac5b3f75184f0315fba1c6fbf15825fc "pdflatex"
-  "main.out" 1778011147 2548 8c6a4eb9a89de05d8855f0c38c2b6fcc "pdflatex"
-  "main.tex" 1778011134 20706 1722435c9aaf22a2b3584f3cc9eddb94 ""
-  "main.toc" 1778011147 1720 848fea73a5cf132a459fc5f373a7ba66 "pdflatex"
+  "main.aux" 1778036945 6409 39a2d84c199ad35d18afd26d9dad9ce4 "pdflatex"
+  "main.bbl" 1778036940 2441 cab950a4a291906ca961bc725d939657 "bibtex main"
+  "main.lof" 1778036946 371 e964966d5c89939ed7849a701cf24a66 "pdflatex"
+  "main.lot" 1778036946 170 ac5b3f75184f0315fba1c6fbf15825fc "pdflatex"
+  "main.out" 1778036945 2548 8c6a4eb9a89de05d8855f0c38c2b6fcc "pdflatex"
+  "main.tex" 1778036725 20159 270fc5599207ef8d48175b9748059996 ""
+  "main.toc" 1778036946 1720 848fea73a5cf132a459fc5f373a7ba66 "pdflatex"
   (generated)
   "main.aux"
   "main.lof"

@@ -1,4 +1,4 @@
-\begin{thebibliography}{11}
+\begin{thebibliography}{12}
 \expandafter\ifx\csname natexlab\endcsname\relax\def\natexlab#1{#1}\fi
 
 \bibitem[{Aligica(2009)}]{aligica}
@@ -38,6 +38,12 @@ Rodr{\'i}guez~del R{\'i}o, R. \& Zuazua, E. 2003{\natexlab{a}}, Series de
 \bibitem[{Rodr{\'i}guez~del R{\'i}o \& Zuazua(2003{\natexlab{b}})}]{RoZu03}
 Rodr{\'i}guez~del R{\'i}o, R. \& Zuazua, E. 2003{\natexlab{b}}, Cubo Mat. Educ,
   5, 185
+
+\bibitem[{{Soszy{\'n}ski}(2024)}]{ogle2024}
+{Soszy{\'n}ski}, I. 2024,
+  \href{http://dx.doi.org/10.31577/caosp.2024.54.2.234}{\color{magenta}Contributions
+  of the Astronomical Observatory Skalnate Pleso},
+  \href{https://ui.adsabs.harvard.edu/abs/2024CoSka..54b.234S}{54, 234}
 
 \bibitem[{Udalski {et~al.}(2002)Udalski, Szymański, Kubiak, Pietrzynski,
   Soszyński, Woźniak, Żebruń, Szewczyk, \& Wyrzykowski}]{udalski2002bvi}

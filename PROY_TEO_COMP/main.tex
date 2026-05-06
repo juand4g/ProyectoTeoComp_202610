@@ -164,28 +164,14 @@ Debido a estas complejidades, el análisis de binarias fotométricas suele reali
 Las estrellas binarias constituyen la principal fuente de masas estelares determinadas con precisión. Las masas de estrellas aisladas se estiman a partir de relaciones masa--luminosidad, las cuales deben calibrarse utilizando observaciones de sistemas binarios \cite{Karttunen2016}.
 
 \section{Sobre el proyecto OGLE}
-El artículo \cite{udalski2002bvi} presenta los mapas fotométricos en $V$ e $I$ del bulbo galáctico obtenidos durante la fase OGLE-II del proyecto OGLE. Es un catálogo masivo con fotometría media y astrometría de aproximadamente $3\times10^{7}$ estrellas distribuidas en 49 campos que cubren unos $\sim 11$ deg$^{2}$ en la región central de la Vía Láctea.
 
-Las observaciones fueron realizadas con el telescopio de 1.3 m en Las Campanas, usando un CCD 2048$\times$2048 en modo drift-scan. La mayoría de las imágenes se tomaron en banda $I$ (entre 150 y 570 por campo), mientras que en $V$ se obtuvieron muchas menos (5–18). El seeing mediano fue de aproximadamente $1.25''$, lo cual es importante porque se trata de campos extremadamente densos.
+El \textit{Optical Gravitational Lensing Experiment} (OGLE) es uno de los relevamientos fotométricos más extensos y longevos de la astronomía moderna. Iniciado en 1992 con el objetivo original de detectar eventos de microlente gravitacional, el proyecto evolucionó hasta convertirse en un relevamiento de gran escala orientado a identificar y estudiar toda forma de variabilidad estelar \citep{ogle2024}. Las observaciones se realizan con el telescopio de Varsovia de 1.3\,m, ubicado en el Observatorio de Las Campanas, en Chile, y se concentran en las regiones más densas del cielo austral: el bulbo galáctico, el disco galáctico y las Nubes de Magallanes.
 
-La reducción de datos se hizo con el pipeline estándar de OGLE. Se utilizó DOPHOT en modo de posición fija, tomando como referencia una imagen plantilla con muy buen seeing. La fotometría instrumental se transformó al sistema estándar de Landolt mediante relaciones lineales del tipo
-\begin{equation}
-V = v - 0.002 (V-I) + \mathrm{const}_{V},
-\end{equation}
-\begin{equation}
-I = i + 0.029 (V-I) + \mathrm{const}_{I},
-\end{equation}
-\begin{equation}
-V-I = 0.969 (v-i) + \mathrm{const}_{V-I}.
-\end{equation}
+A lo largo de su historia, el proyecto se ha dividido en cuatro fases con capacidades observacionales progresivamente mayores. La cámara actual, instalada en 2010 para iniciar OGLE-IV, cuenta con un mosaico de 32 chips CCD que cubre aproximadamente 3\,600 deg$^{2}$. Cada nueva fase representó un salto de un orden de magnitud respecto a la anterior: actualmente OGLE monitorea en torno a dos mil millones de fuentes puntuales y su base de datos acumula cerca de $1.2 \times 10^{12}$ mediciones fotométricas individuales, constituyéndola en una de las más grandes de la historia de la astronomía \citep{ogle2024}.
 
-Los residuos típicos respecto a estándares no superan $\sim 0.03$ mag en el rango calibrado ($V-I < 2$). Sin embargo, el artículo discute con cuidado posibles errores sistemáticos para estrellas muy rojas ($V-I > 2$), que son comunes en el bulbo por la alta extinción interestelar. Debido a que el filtro $I$ usado (vidrio RG9) tiene una cola roja más extendida que el estándar, puede introducirse una diferencia sistemática que podría llegar hasta $\sim 0.2$–$0.25$ mag para colores muy extremos. Se modela este efecto usando atmósferas de Kurucz y leyes de extinción estándar.
+Una consecuencia directa de este monitoreo continuo es la \textit{OGLE Collection of Variable Stars} (OCVS), un catálogo creciente que contiene actualmente más de 1.1 millones de estrellas variables clasificadas en la Vía Láctea y las Nubes de Magallanes. El catálogo incluye, entre otros tipos, Cefeidas clásicas, estrellas RR Lyr\ae{}, variables $\delta$ Scuti, variables de largo período, binarias eclipsantes y novae enanas \citep{ogle2024}. Una característica que distingue a la OCVS de catálogos obtenidos mediante clasificación automática es que cada objeto ha sido revisado visualmente por astrónomos expertos, lo que le confiere un nivel de pureza y completitud excepcionalmente alto. Por este motivo, la colección es ampliamente utilizada como conjunto de entrenamiento y referencia para algoritmos de clasificación automática de estrellas variables basados en aprendizaje automático \citep{ogle2024}.
 
-En cuanto a precisión fotométrica, las comparaciones en regiones de solapamiento entre campos muestran diferencias medias menores a 0.01 mag y dispersión típica $\sim 0.025$ mag. La completitud depende fuertemente de la densidad estelar, pero es alta (mayor al 90\%) hasta $I \approx 17$–18 mag en campos menos congestionados.
-
-Los diagramas color–magnitud ($I$ vs $V-I$) muestran claramente las poblaciones típicas hacia el centro galáctico: secuencia principal del disco (estructura casi vertical azul), rama gigante roja del bulbo con un red clump prominente, y el turn-off del bulbo. También se ve muy fuerte el efecto de la extinción diferencial, que ensancha y desplaza las secuencias dependiendo del campo observado. En campos muy cercanos al centro, la extinción puede ser tan alta que solo se distingue claramente la secuencia principal del disco.
-
-Finalmente, el catálogo se publica electrónicamente y contiene para cada estrella coordenadas ecuatoriales, posiciones en píxeles, magnitudes medias, número de observaciones y dispersión. Aunque el mapa contiene solo magnitudes medias, la dispersión en banda $I$ permite identificar candidatos a estrellas variables. De hecho, el trabajo menciona que ya se había liberado un catálogo preliminar con $\sim 2\times10^{5}$ variables.
+Para los fines del presente trabajo, los datos de la OCVS constituyen el conjunto de prueba principal. La riqueza de tipos variables y la calidad de las curvas de luz —con series temporales en bandas $I$ y $V$ que abarcan décadas de observación— proporcionan un banco de pruebas ideal para evaluar el desempeño del método de mínima entropía y compararlo con otros algoritmos de búsqueda de períodos.
 	
 \chapter{Problema de investigación}
 El método de mínima propuesto por \cite{cincotta1995astronomical} tiene ventajas importantes sobre otros métodos basados en Fourier: tiene un respaldo matemático sólido en la teoría de la información y es bastante sencillo de implementar. Sin embargo, su adopción generalizada se limita por dos factores principales. 
